@@ -42,6 +42,8 @@
 
         <div>
             <div><span class="replyCount">댓글수 : [[${dto.replyCount}]]</span></div>
+            <div class="list-group replyList">
+            </div>
         </div>
 
     </th:block>
@@ -52,8 +54,24 @@
     $(".replyCount").click(function(){
         $.getJSON("/replies/board/"+bno,function(arr){
             console.log(arr);
+            displayReply(arr);
         })
     })
+    let replyDiv = $(".replyList");
+    function displayReply(arr){
+        let str = "";
+        $.each(arr,function(idx, reply){
+            str +='<div class="card">\n' +
+                '<div class="card-header">'+reply.rno+'</div>\n' +
+                '                    <div class="card-body">\n' +
+                '                        <h5>'+reply.text+'</h5>\n' +
+                '                        <h6>'+reply.replyer+'</h6>\n' +
+                '                        <p class="card-text">'+reply.regDate+'</p>\n' +
+                '                    </div>\n' +
+                '                </div>';
+        })
+        replyDiv.html(str);
+    }
 
 </script>
 </html>

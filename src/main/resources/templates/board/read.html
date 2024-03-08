@@ -40,7 +40,20 @@
         <button type="button" class="btn btn-primary listBtn">목록</button>
         </a>
 
+        <div>
+            <div><span class="replyCount">댓글수 : [[${dto.replyCount}]]</span></div>
+        </div>
 
     </th:block>
 </th:block>
+<script th:inline="javascript">
+    //replyCount클릭했을때 해당 게시글의 댓글을 요청하고 결과를 콘솔에 출력
+    let bno = [[${dto.bno}]];
+    $(".replyCount").click(function(){
+        $.getJSON("/replies/board/"+bno,function(arr){
+            console.log(arr);
+        })
+    })
+
+</script>
 </html>

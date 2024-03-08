@@ -87,7 +87,7 @@ implements SearchBoardRepository{
         jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
 
         //조회
-        JPQLQuery<Tuple> tupleJPQLQuery = jpqlQuery.select(board,member.regDate.count());
+        JPQLQuery<Tuple> tupleJPQLQuery = jpqlQuery.select(board,member,reply.count());
         //where절 설정
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = board.bno.gt(0L);
@@ -115,12 +115,13 @@ implements SearchBoardRepository{
         tupleJPQLQuery.where(booleanBuilder);
         tupleJPQLQuery.groupBy(board, member);
         //페이징 추가.
-        this.getQuerydsl().applyPagination(pageable,tupleJPQLQuery);
+        this.getQuerydsl().applyPagination(pageable,tupleJPQLQuery); //페이징 처리를 함. 안에 offset, limit가 저으이되어있음.
         List<Tuple> result = tupleJPQLQuery.fetch();
         log.info(result);
-        long count = tupleJPQLQuery.fetchCount();
+        long count = tupleJPQLQuery.fetchCount(); //전체레코드의 수를 리턴.
         log.info(count);
 
-        return new PageImpl<Object[]>(result.stream().map(Tuple::toArray).collect(Collectors.toList()),pageable,count   );
+        return new PageImpl<Object[]>(result.stream().map(Tuple::toArray).collect(Collectors.toList()),pageable,count   );//(list타입, pageable타입, w전체레코드갯수)
+
     }
 }

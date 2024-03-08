@@ -3,6 +3,7 @@ package org.green.community.repository;
 import jakarta.transaction.Transactional;
 import org.green.community.entity.Board;
 import org.green.community.entity.Member;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,6 +88,11 @@ public class BoardRepositoryTests {
 
         Pageable pageable = PageRequest.of(0,10,Sort.by("bno").descending());
 
-        boardRepository.searchPage("t", "1",pageable);
+        Page<Object[]> result = boardRepository.searchPage("t", "2", pageable);
+        List<Object[]> arr = result.getContent();
+        for (Object[] a : arr) {
+            System.out.println(a[0].toString());
+        }
+        System.out.println("****************************************************** 결과 : "+result);
     }
 }
